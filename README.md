@@ -1,3 +1,4 @@
 # Apollo Fullstack Tutorial
 
-## Client
+## Read Me  
+Starting point to write selenium tests.
