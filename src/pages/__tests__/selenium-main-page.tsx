@@ -20,7 +20,8 @@ describe('Main Page', () => {
           assert.equal(url, "http://localhost:3000/", "Able to access main page");
 
           //Verify there is a title
-          let title = await driver.findElement(By.className("css-1r0stgl"));
+          // let title = await driver.findElement(By.className("css-1r0stgl"));
+          let title = await driver.wait(until.elementLocated(By.className("css-1r0stgl")), 10000);  //make sure title is rendered on the screen before testing
           title = await title.getText();
           assert.equal(title, "Space Explorer", "The main page has a title");
 
@@ -40,7 +41,7 @@ describe('Main Page', () => {
 
           //Get the email field, should be empty
           let emailField = await driver.findElement(By.name("email"));
-          let emailText = await emailField.getText();
+          let emailText = await emailField.getAttribute("value");
           assert.equal(emailText, "", "Email field is on the page and empty");
 
           //Send keys to the input
@@ -67,5 +68,41 @@ describe('Main Page', () => {
         }
         
   }, 30000); //timeout after 30seconds
+
+  it.only('Login button renders on the home page', async () => {
+
+    // Open firefox browser
+      let driver = await new Builder().forBrowser('firefox').build();
+      try {
+        //Go to the main page
+        await driver.get('http://localhost:3000');
+
+         //Get the email field, should be empty
+         let emailField = await driver.findElement(By.name("email"));
+
+         //Send keys to the input
+         await emailField.sendKeys("dsagasdgasdgasg");
+
+        //Get the login button element
+        let loginButton = await driver.wait(until.elementLocated(By.className("css-wwcn44")), 10000);  //make sure title is rendered on the screen before testing
+        await loginButton.click();
+        await console.log(loginButton);
+
+        //verify we didnt go anywhere, were still on the same page
+        let url = await driver.getCurrentUrl();
+        assert.equal(url, "http://localhost:3000/", "Able to access main page");
+
+          //Verify there is a title
+          // let title = await driver.findElement(By.className("css-1r0stgl"));
+          let title = await driver.wait(until.elementLocated(By.className("css-1r0stgl")), 10000);  //make sure title is rendered on the screen before testing
+          title = await title.getText();
+          assert.equal(title, "Space Explorer", "The main page has a title");
+
+
+      } finally {
+        await driver.quit();
+      }
+      
+}, 30000); //timeout after 30seconds
   
 });
