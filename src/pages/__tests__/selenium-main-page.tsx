@@ -11,6 +11,7 @@ describe('Main Page', () => {
 
   it('Main page renders properly', async () => {
 
+      // Open firefox browser
         let driver = await new Builder().forBrowser('firefox').build();
         try {
           //Go to the main page
@@ -31,6 +32,7 @@ describe('Main Page', () => {
 
   it('Main page email input works properly', async () => {
 
+      //launches firefox browser
         let driver = await new Builder().forBrowser('firefox').build();
         try {
           //Go to the main page
@@ -45,7 +47,6 @@ describe('Main Page', () => {
           await emailField.sendKeys("Test@test.com");
           emailText = await emailField.getAttribute("value");
           assert.equal(emailText, "Test@test.com", "Email field is able to receive keyboard input");
-
           //remove n keys from input
           let n = 3;
           for (let i=0; i<n; i++){
@@ -60,11 +61,11 @@ describe('Main Page', () => {
           emailText = await emailField.getAttribute("value");
           assert.equal(emailText, "", "Email field is able to be cleared");
 
+
         } finally {
           await driver.quit();
         }
         
   }, 30000); //timeout after 30seconds
-
   
 });
