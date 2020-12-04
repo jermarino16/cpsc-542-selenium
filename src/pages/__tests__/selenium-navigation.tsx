@@ -88,7 +88,7 @@ describe('Navigating with Icons', () => {
         
   }, 30000); //timeout after 30seconds
   
-  it.only('Can logout via icon', async () => {
+  it('Can logout via icon', async () => {
      //define webdriver
      let driver = new Builder().forBrowser('firefox').build();
      driver.get(appURL);
@@ -109,6 +109,42 @@ describe('Navigating with Icons', () => {
       let url = await driver.getCurrentUrl();
       //verify it is the cart page.
       assert.equal(url, appURL + "/",  "Able to logout");
+    }finally{
+        await driver.quit();
+    }
+  
+        
+  }, 30000); //timeout after 30seconds
+
+  it.only('Can go back to home after being on another link via icon', async () => {
+     //define webdriver
+     let driver = new Builder().forBrowser('firefox').build();
+     driver.get(appURL);
+     //Get the email field, 
+     let emailField = await driver.wait(until.elementLocated(By.name("email")), 10000);
+     //Send keys to the input
+     await emailField.sendKeys(testEmail);
+     //submit / login
+     await emailField.sendKeys(Key.ENTER);
+
+    try{
+       //grab the cart icon
+       let cartIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/a[2]')), 10000);
+       //simulate a click
+       await cartIcon.click();
+       //grab the new url
+       let url = await driver.getCurrentUrl();
+       //verify it is the cart page.
+       assert.equal(url, appURL + "/cart", "Able to reach the cart via icon");
+
+       //now navigate back to the home page
+       let homeIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/a[1]')), 10000);
+       //simulate a click
+       await homeIcon.click();
+       //grab the new url
+        url = await driver.getCurrentUrl();
+       //verify it is the cart page.
+       assert.equal(url, appURL + "/", "Able to reach the home page via icon");
     }finally{
         await driver.quit();
     }
