@@ -14,7 +14,7 @@ describe('Launch Tests: ', () => {
   afterEach(cleanup);
   
 
-  it.only('Launches load after logging into the application', async () => {
+  it('Launches load after logging into the application', async () => {
     //define webdriver
     let driver = new Builder().forBrowser('firefox').build();
     driver.get(appURL);
@@ -47,28 +47,133 @@ describe('Launch Tests: ', () => {
   
   }, 30000); //timeout after 30seconds
 
-  // it.only('Can View a launch', async () => {
-  //   //define webdriver
-  //   let driver = new Builder().forBrowser('firefox').build();
-  //   driver.get(appURL);
-  //   //Get the email field, 
-  //   let emailField = await driver.wait(until.elementLocated(By.name("email")), 10000);
-  //   //Send keys to the input
-  //   await emailField.sendKeys(testEmail);
-  //   //submit / login
-  //   await emailField.sendKeys(Key.ENTER);
+  it('Can View a launch', async () => {
+    //define webdriver
+    let driver = new Builder().forBrowser('firefox').build();
+    driver.get(appURL);
+    //Get the email field, 
+    let emailField = await driver.wait(until.elementLocated(By.name("email")), 10000);
+    //Send keys to the input
+    await emailField.sendKeys(testEmail);
+    //submit / login
+    await emailField.sendKeys(Key.ENTER);
 
-  //   try{
-  //     //grab the first launch text
-  //     let launchOne = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a[1]')), 10000);
-  //     // sleep.sleep(3);
-  //     //verify that the launch is there
-  //     assert.equal(launchOneText,  "Falcon 9", "Launch one loaded on home page");
-  //   }finally{
-  //       await driver.quit();
-  //   }
+    try{
+      //grab the first launch text
+      let launchOne = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a[1]')), 10000);
+      await launchOne.click();
+      let url = await driver.getCurrentUrl();
+      // sleep.sleep(3);
+      //verify that we are on the correct url
+      assert.equal(url, appURL + "/launch/109",  "Can View the first launch on the list");
+    }finally{
+        await driver.quit();
+    }
   
-  // }, 30000); //timeout after 30seconds
+  }, 30000); //timeout after 30seconds
+
+  it('Can add launch to cart', async () => {
+    //define webdriver
+    let driver = new Builder().forBrowser('firefox').build();
+    driver.get(appURL);
+    //Get the email field, 
+    let emailField = await driver.wait(until.elementLocated(By.name("email")), 10000);
+    //Send keys to the input
+    await emailField.sendKeys(testEmail);
+    //submit / login
+    await emailField.sendKeys(Key.ENTER);
+
+    try{
+      //grab the first launch text
+      let launchOne = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a[1]')), 10000);
+      await launchOne.click();
+      // sleep.sleep(3);
+      //find the add to cart button and click it
+      let cartButton = await driver.wait(until.elementLocated(By.className('css-wwcn44')), 10000);
+      await cartButton.click();
+
+      //navigate to the cart page and verify that the launch is there
+       //grab the cart icon
+       let cartIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/a[2]')), 10000);
+       //simulate a click
+       await cartIcon.click();
+       //grab the new url
+       let url = await driver.getCurrentUrl();
+       //verify it is the cart page.
+       assert.equal(url, appURL + "/cart", "Able to reach the cart via icon");
+
+        //grab the first launch and verify its loaded
+      let launchOneOnCartPage = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a')), 10000);
+      let launchOneTextOnCartPage = await launchOneOnCartPage.findElement(By.tagName("h3"));
+      launchOneTextOnCartPage = await launchOneTextOnCartPage.getText();
+      //verify that the launch is there
+      assert.equal(launchOneTextOnCartPage,  "Starlink-15 (v1.0)", "Launch one was added to cart");
+
+
+    }finally{
+        await driver.quit();
+    }
+  
+  }, 30000); //timeout after 30seconds
+
+  it('Can remove launch from cart', async () => {
+    //define webdriver
+    let driver = new Builder().forBrowser('firefox').build();
+    driver.get(appURL);
+    //Get the email field, 
+    let emailField = await driver.wait(until.elementLocated(By.name("email")), 10000);
+    //Send keys to the input
+    await emailField.sendKeys(testEmail);
+    //submit / login
+    await emailField.sendKeys(Key.ENTER);
+
+    try{
+      //grab the first launch text
+      let launchOne = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a[1]')), 10000);
+      await launchOne.click();
+      // sleep.sleep(3);
+      //find the add to cart button and click it
+      let cartButton = await driver.wait(until.elementLocated(By.className('css-wwcn44')), 10000);
+      await cartButton.click();
+
+      //navigate to the cart page and verify that the launch is there
+       //grab the cart icon
+       let cartIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/a[2]')), 10000);
+       //simulate a click
+       await cartIcon.click();
+       //grab the new url
+       let url = await driver.getCurrentUrl();
+       //verify it is the cart page.
+       assert.equal(url, appURL + "/cart", "Able to reach the cart via icon");
+
+        //grab the first launch and verify its loaded
+      let launchOneOnCartPage = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a')), 10000);
+      let launchOneTextOnCartPage = await launchOneOnCartPage.findElement(By.tagName("h3"));
+      launchOneTextOnCartPage = await launchOneTextOnCartPage.getText();
+      //verify that the launch is there
+      assert.equal(launchOneTextOnCartPage,  "Starlink-15 (v1.0)", "Launch one was added to cart");
+
+      //navigate back to the launch page
+      await launchOneOnCartPage.click();
+      cartButton = await driver.wait(until.elementLocated(By.className('css-wwcn44')), 10000);
+      await cartButton.click();//remove from cart
+
+      //go back to cart page
+      cartIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/a[2]')), 10000);
+      //simulate a click
+      await cartIcon.click();
+
+      //verify that there is no launch in the cart
+      let emptyCartMessage = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/p')), 10000);
+      let emptyCartMessageText = await emptyCartMessage.getText();
+      assert.equal(emptyCartMessageText, "No items in your cart", "Verified that launches can be removed from a cart");
+
+    }finally{
+        await driver.quit();
+    }
+  
+  }, 30000); //timeout after 30seconds
+
 
   
 
