@@ -18,14 +18,10 @@ describe('Main Page', () => {
     driver.get(appURL);
      //Get the email field, 
      let emailField = await driver.findElement(By.name("email"));
-
      //Send keys to the input
      await emailField.sendKeys(testEmail);
      //submit / login
      await emailField.sendKeys(Key.ENTER);
-
-     
-
   }
 
    beforeEach(async () => {
