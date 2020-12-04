@@ -52,7 +52,7 @@ describe('Navigating with Icons', () => {
       //grab the new url
       let url = await driver.getCurrentUrl();
       //verify it is the cart page.
-      assert.equal(url, appURL + "/cart", "Able to login and reach the home page");
+      assert.equal(url, appURL + "/cart", "Able to reach the cart via icon");
     }finally{
         await driver.quit();
     }
@@ -60,7 +60,7 @@ describe('Navigating with Icons', () => {
         
   }, 30000); //timeout after 30seconds
 
-  it.only('Can reach the profile page via Icon', async () => {
+  it('Can reach the profile page via Icon', async () => {
      //define webdriver
      let driver = new Builder().forBrowser('firefox').build();
      driver.get(appURL);
@@ -80,7 +80,35 @@ describe('Navigating with Icons', () => {
       //grab the new url
       let url = await driver.getCurrentUrl();
       //verify it is the cart page.
-      assert.equal(url, appURL + "/profile", "Able to login and reach the home page");
+      assert.equal(url, appURL + "/profile", "Able to reach the profile page via icon");
+    }finally{
+        await driver.quit();
+    }
+  
+        
+  }, 30000); //timeout after 30seconds
+  
+  it.only('Can logout via icon', async () => {
+     //define webdriver
+     let driver = new Builder().forBrowser('firefox').build();
+     driver.get(appURL);
+     //Get the email field, 
+     let emailField = await driver.wait(until.elementLocated(By.name("email")), 10000);
+     //Send keys to the input
+     await emailField.sendKeys(testEmail);
+     //submit / login
+     await emailField.sendKeys(Key.ENTER);
+
+    try{
+      //grab the cart icon
+      let logoutIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/button[1]')), 10000);
+      //simulate a click
+      await logoutIcon.click();
+      sleep.sleep(2);
+      //grab the new url
+      let url = await driver.getCurrentUrl();
+      //verify it is the cart page.
+      assert.equal(url, appURL + "/",  "Able to logout");
     }finally{
         await driver.quit();
     }
