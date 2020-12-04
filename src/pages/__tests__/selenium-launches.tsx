@@ -175,6 +175,66 @@ describe('Launch Tests: ', () => {
   }, 30000); //timeout after 30seconds
 
 
+  // //STATUS: when clicking book launch, test fails and errors out with database query error.
+  // it('Can book a launch', async () => {
+  //   //define webdriver
+  //   let driver = new Builder().forBrowser('firefox').build();
+  //   driver.get(appURL);
+  //   //Get the email field, 
+  //   let emailField = await driver.wait(until.elementLocated(By.name("email")), 10000);
+  //   //Send keys to the input
+  //   await emailField.sendKeys(testEmail);
+  //   //submit / login
+  //   await emailField.sendKeys(Key.ENTER); 
+
+  //   try{
+  //     //grab the first launch text
+  //     let launchOne = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a[1]')), 10000);
+  //     await launchOne.click();
+  //     // sleep.sleep(3);
+  //     //find the add to cart button and click it
+  //     let cartButton = await driver.wait(until.elementLocated(By.className('css-wwcn44')), 10000);
+  //     await cartButton.click();
+
+  //     //navigate to the cart page and verify that the launch is there
+  //      //grab the cart icon
+  //      let cartIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/a[2]')), 10000);
+  //      //simulate a click
+  //      await cartIcon.click();
+  //      //grab the new url
+  //      let url = await driver.getCurrentUrl();
+  //      //verify it is the cart page.
+  //      assert.equal(url, appURL + "/cart", "Able to reach the cart via icon");
+
+  //     //find the book launches button
+  //      let bookLaunchesButton = await driver.wait(until.elementLocated(By.className("css-wwcn44")), 10000);
+  //     //click the button
+  //     await bookLaunchesButton.click();
+
+  //     //verify no launches are in the cart    
+  //     let emptyCartMessage = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/p')), 10000);
+  //     let emptyCartMessageText = await emptyCartMessage.getText();
+  //     assert.equal(emptyCartMessageText, "No items in your cart", "Verified that launches can be removed from a cart");
+
+  //     //navigate to the profile page and verify the launch is there
+  //      let profileIcon = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/footer/div/a[3]')), 10000);
+  //      //simulate a click
+  //      await profileIcon.click();
+
+
+  //      //verify the launch is there
+  //     launchOne = await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div[2]/a')), 10000);
+  //     let launchOneText = await launchOne.findElement(By.tagName("h3"));
+  //     assert.equal(launchOneText, "Starlink-15 (v1.0)", "Launch is on the profile page and has been booked");
+       
+
+  //   }finally{
+  //       await driver.quit();
+  //   }
+  
+  // }, 30000); //timeout after 30seconds
+
+
   
 
 
