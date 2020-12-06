@@ -116,7 +116,7 @@ describe('Navigating with Icons', () => {
         
   }, 30000); //timeout after 30seconds
 
-  it.only('Can go back to home after being on another link via icon', async () => {
+  it('Can go back to home after being on another link via icon', async () => {
      //define webdriver
      let driver = new Builder().forBrowser('firefox').build();
      driver.get(appURL);
